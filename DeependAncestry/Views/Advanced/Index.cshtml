@@ -1,0 +1,85 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using DeependAncestry.Helpers;
+
+@model IPagedList<DeependAncestry.Models.People>
+
+
+@{
+    ViewBag.Title = "DeependAncestry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Deepend<b>Ancestry</b></h2>
+
+
+@using (Html.BeginForm("Index", "Advanced", FormMethod.Get))
+{
+
+
+    <table width="800px">
+        <tr>
+            <td>
+                @Html.TextBox("searchName", null, new { placeholder = "Name", @class = "form-control" })
+
+            </td>
+            <td><button type="submit" class="button"><b>Advanced Search</b></button></td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Gender: @Html.CheckBoxSimple("isMale", new { @class = "check" }) Male  @Html.CheckBoxSimple("isFemale", new { @class = "check" }) Female</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">Direction:  @Html.RadioButton("Direction", "ancestors", true, new { @class = "check" }) Ancestors  @Html.RadioButton("Direction", "descendants", new { @class = "check" }) Descendants</td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ValidationMessage("searchName", "", new { @class = "validation" }) </td>
+        </tr>
+    </table>
+
+}
+
+<hr />
+Results:
+<br />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>GENDER</th>
+            <th>BIRTHPLACE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr class="grid">
+                    <td scope="row">@item.id</td>
+                    <td>@item.name</td>
+                    <td>@item.gender</td>
+                    <td>@item.BirthPlace</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchName = Request.QueryString["searchName"], isMale = Request.QueryString["isMale"], isFemale = Request.QueryString["isFemale"], Direction = Request.QueryString["Direction"] }),
+                    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">No results found.</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

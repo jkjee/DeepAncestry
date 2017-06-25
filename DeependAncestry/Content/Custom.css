@@ -1,0 +1,12 @@
+﻿
+    .form-control{border-radius:5px;width: 380px;height:50px;border: 1px solid #000000;font-size: 25px;}
+    .button {border-radius:12px;background-color: #e7e7e7; color: black;width: 400px;height:50px;display: inline-block;font-size: 25px;}
+    .check {width: 25px;height: 25px;border: solid 1px #000000;}
+ 
+    body {font-size: 25px;}
+    .ital {font-weight: bold;font-style: italic;}
+    th {background-color : #A7C937;color : #FFFFFF;}
+    .validation {color:red;}
+
+    tr.grid:nth-child(odd)    { background-color:#eee; }
+    tr.grid:nth-child(even)   { background-color:#fff; }
