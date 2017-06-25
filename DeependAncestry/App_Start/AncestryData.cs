@@ -12,6 +12,8 @@ namespace DeependAncestry
     public static class AncestryData 
     {
         private static readonly string FilePath = $"{AppDomain.CurrentDomain.BaseDirectory}/App_Data/data_large.json";
+
+        private static readonly int _maximumLevel = 10;
         public static PeopleList ReadAncestryPeopleData()
         {
             PeopleList peopleList = new PeopleList {people = new List<People>()};
@@ -206,16 +208,24 @@ namespace DeependAncestry
 
         private static List<int> GetRelationData(int id, List<KeyValuePair<int, int>> newLst)
         {
+            return GetRelationData(id, 0, newLst);
+        }
+
+        private static List<int> GetRelationData(int id, int currentLevel, List<KeyValuePair<int, int>> newLst)
+        {
             var list = new List<int>();
-            for (int i = 0; i < newLst.Count; i++)
+            if (currentLevel < _maximumLevel)
             {
-                if (Convert.ToInt32(newLst[i].Key) == id)
+                for (int i = 0; i < newLst.Count; i++)
                 {
-                    if (!list.Contains(Convert.ToInt32(newLst[i].Value)))
+                    if (Convert.ToInt32(newLst[i].Key) == id)
                     {
-                        list.Add(Convert.ToInt32(newLst[i].Value));
-                        var l = GetRelationData(newLst[i].Value, newLst);
-                        list.AddRange(l);
+                        if (!list.Contains(Convert.ToInt32(newLst[i].Value)))
+                        {
+                            list.Add(Convert.ToInt32(newLst[i].Value));
+                            var l = GetRelationData(newLst[i].Value, currentLevel + 1, newLst);
+                            list.AddRange(l);
+                        }
                     }
                 }
             }
